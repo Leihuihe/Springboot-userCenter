@@ -2,6 +2,8 @@ package com.leihui.user_center.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.leihui.user_center.common.ErrorCode;
+import com.leihui.user_center.exception.BusinessException;
 import com.leihui.user_center.mapper.UserMapper;
 import com.leihui.user_center.model.domain.User;
 import com.leihui.user_center.service.UserService;
@@ -32,13 +34,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public long userRegister(String userAccount, String userPassword, String checkPassword, String codeId) {
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, codeId)) {
-            return -1;
+//            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"Empty Params");
         }
-        if (userAccount.length() < 4 || userPassword.length() < 8 || codeId.length() > 5) {
-            return -1;
+        if (userAccount.length() < 4) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "user account is too short");
+        }
+        if (userPassword.length() < 8) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Password is too short");
+        }
+        if (codeId.length() > 5) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Code id is too long");
         }
         if (!userPassword.equals(checkPassword)) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR, "Password is not consistent");
         }
         // Check DB unique userAccount
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
