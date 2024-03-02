@@ -1,4 +1,4 @@
-spring:
+wqspring:
   application:
     name: user-center
   datasource:

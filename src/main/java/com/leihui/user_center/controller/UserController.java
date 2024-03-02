@@ -26,6 +26,7 @@ import static com.leihui.user_center.constant.UserConstant.USER_LOGIN_STATE;
  */
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(origins = {"http://49.235.128.21"}, allowCredentials = "true")
 public class UserController {
 
     @Resource
